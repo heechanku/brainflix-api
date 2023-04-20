@@ -54,6 +54,7 @@ router.post("/", (req, res) => {
 
   videoList.push(newVideo);
   fs.writeFileSync("./data/videos.json", JSON.stringify(videoList));
+  res.send("created")
 });
 
 function getVideos() {
