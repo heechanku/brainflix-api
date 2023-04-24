@@ -6,8 +6,11 @@ const videoRoutes = require("./routes/videos");
 const { PORT } = process.env;
 
 
+
 app.use(cors())
 app.use(express.json());
+app.use(express.static('public'))
+
 
 
 

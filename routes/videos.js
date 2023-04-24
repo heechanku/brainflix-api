@@ -4,6 +4,9 @@ const fs = require("node:fs");
 const { v4 } = require("uuid");
 
 
+
+
+
 router.get("/", (req, res) => {
   const videoList = getVideos();
 
@@ -22,7 +25,7 @@ router.get("/:id", (req, res) => {
   }
 });
 
-router.post("/", (req, res) => {
+router.post("/", validator, (req, res) => {
   const videoList = getVideos();
 
 
@@ -32,7 +35,11 @@ router.post("/", (req, res) => {
     id: v4(),
     title,
     description,
+    "views": Math.floor(Math.random() *10000),
+    "likes": Math.floor(Math.random() *10000),
+    "timestamp": Date.now(),
     channel: "Heech's Channel",
+    image: "http://localhost:5000/images/Upload-video-preview.jpg",
     comments: [
         {
             id: v4(),
@@ -48,6 +55,13 @@ router.post("/", (req, res) => {
             "likes": 1000000234234230,
             "timestamp": Date.now()
         },
+        {
+            id: v4(),
+            name: "Caleb",
+            comment: "Pog",
+            "likes": 100000023423423234230,
+            "timestamp": Date.now()
+        },
     ]
 
   };
@@ -61,6 +75,15 @@ function getVideos() {
   const videoFile = fs.readFileSync("./data/videos.json");
   const videos = JSON.parse(videoFile);
   return videos;
+}
+
+function validator(req, res, next) {
+  const { title, description } = req.body;
+  if (!title || !description) {
+    res.status(400).send("need an title and description");
+  } else {
+    next();
+  }
 }
 
 module.exports = router;
